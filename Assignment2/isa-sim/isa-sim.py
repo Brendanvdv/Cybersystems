@@ -1,7 +1,10 @@
 import sys
 import re
 
-print("\nWelcome to the ISA simulator! - Designed by <YOUR NAMES HERE>")
+#python isa-sim.py 50 test_1/program_1.txt test_1/data_mem_1.txt
+#
+
+print("\nWelcome to the ISA simulator! - Designed by <Abi, Brendan, Pablo>")
 
 if len(sys.argv) < 4:
     print('Too few arguments.')
@@ -310,7 +313,10 @@ instructionMemory = InstructionMemory()
 print('\n---Start of simulation---')
 
 #####################################
-##      Write your code here      ##
+
+print(registerFile.read_register("R2"))
+
+print(instructionMemory.read_opcode("1"))
 ####################################
 
 print('\n---End of simulation---\n')
