@@ -327,25 +327,127 @@ print('\n---Start of simulation---')
 #Dictionary
 #print(instructionMemory.instruction_memory[0]["opcode"])
 
+# print(address, instructionMemory.read_opcode(address))
+# print(instructionMemory.read_operand_1(address))
+# print(instructionMemory.read_operand_2(address))
 
 
 #Iterates through instructions, Breaks when it reaches "END"
-
 registerFile.print_register("R1")
 
 for address in range(0, 256):
     if instructionMemory.read_opcode(address)  == "END":
         break
-    print(address, instructionMemory.read_opcode(address))
-    print(instructionMemory.read_operand_1(address))
-    print(instructionMemory.read_operand_2(address))
-    registerFile.write_register(instructionMemory.read_operand_1(address),int(instructionMemory.read_operand_2(address)))
-    break
 
+    if address in instructionMemory.instruction_memory:
+
+        #print(instructionMemory.instruction_memory[address])
+        print(address)
+        print(instructionMemory.read_opcode(address))
+        oc = instructionMemory.read_opcode(address)
+
+        if oc == "LI":
+             registerFile.write_register(instructionMemory.read_operand_1(address),int(instructionMemory.read_operand_2(address)))
+       
+        break
+    
 
 registerFile.print_register("R1")
 
 
+
+
+
+
+# runs adress 2 in progam_1
+# print(instructionMemory.instruction_memory[1]["opcode"])
+# dataMemory.print_data(1)
+# print(instructionMemory.read_operand_1(1))
+
+# for address in range(0, 256):
+#     if instructionMemory.read_opcode(address)  == "END":
+
+#         break
+    
+#     if address in instructionMemory.instruction_memory:
+#         if instructionMemory.instruction_memory[address]["opcode"] == "LD":
+#             registerFile.print_register("R2")
+#             #dataMemory.write_data("R2",9)
+#             #dataMemory.write_data(instructionMemory.read_operand_1(address),dataMemory.read_data(1))
+#             registerFile.write_register(instructionMemory.read_operand_1(address),dataMemory.read_data(1))
+#             registerFile.print_register("R2")
+#             break
+        
+    
+
+
+
+
+
+
+
+
+# def ocLI(r,v):
+#      registerFile.write_register(instructionMemory.read_operand_1(r),instructionMemory.read_operand_2(v))
+   
+# opcodes = {"LI": ocLI
+
+
+#                 }
+
+# opcodes["LI"](0,1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# def switcher(opcode):
+#     return{
+
+#         'LI': registerFile.write_register(instructionMemory.read_operand_1(address),  instructionMemory.read_operand_2(address))
+
+#     }[opcode]
+
+
+
+# switcher1 = {
+
+#     LI: registerFile.write_register(instructionMemory.read_operand_1,  instructionMemory.read_operand_2)
+# }
+
+
+
+
+
+
+# switcher = {
+
+#     ADD: 
+#     SUB:
+#     OR:
+#     AND: 
+#     NOT:
+#     LI00:
+#     LD:
+#     SD:
+#     JR:
+#     JEQ:
+#     JLT:
+#     NOP:
+#     END:
+
+
+# }
 
 
 
