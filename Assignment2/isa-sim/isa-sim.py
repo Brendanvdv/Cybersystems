@@ -258,7 +258,7 @@ class InstructionMemory:
             return '-'
 
     '''
-    This method returns the third operand of the instruction located in the instruc-
+This method returns the third operand of the instruction located in the instruc-
     tion memory location in the specified address. For example, if the instruction
     is ADD R1, R2, R3;, this method returns R3.
     '''
@@ -314,9 +314,45 @@ print('\n---Start of simulation---')
 
 #####################################
 
-print(registerFile.read_register("R2"))
 
-print(instructionMemory.read_opcode("1"))
+
+#print(registerFile.read_register("R2"))
+
+#print(instructionMemory.read_opcode(7))
+
+# print(type(instructionMemory.read_operand_1(0)))
+# print(type(instructionMemory.read_operand_2(0)))
+# print(type(instructionMemory.print_instruction(28)))
+
+#Dictionary
+#print(instructionMemory.instruction_memory[0]["opcode"])
+
+
+
+#Iterates through instructions, Breaks when it reaches "END"
+
+registerFile.print_register("R1")
+
+for address in range(0, 256):
+    if instructionMemory.read_opcode(address)  == "END":
+        break
+    print(address, instructionMemory.read_opcode(address))
+    print(instructionMemory.read_operand_1(address))
+    print(instructionMemory.read_operand_2(address))
+    registerFile.write_register(instructionMemory.read_operand_1(address),int(instructionMemory.read_operand_2(address)))
+    break
+
+
+registerFile.print_register("R1")
+
+
+
+
+
 ####################################
 
 print('\n---End of simulation---\n')
+
+
+# python isa-sim.py 50 test_1/program_1.txt test_1/data_mem_1.txt
+# python isa-sim.py 50 test_2/program_2.txt test_2/data_mem_2.txt
