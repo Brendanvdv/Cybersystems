@@ -331,15 +331,29 @@ print('\n---Start of simulation---')
 # print(instructionMemory.read_operand_1(address))
 # print(instructionMemory.read_operand_2(address))
 
-def li(r,v):
+
+def add(r,v1,v2):
+    sum = registerFile.read_register(v1) + registerFile.read_register(v2)
+    registerFile.write_register(instructionMemory.read_operand_1(r),sum)
+
+#LI, Load immediate, only uses two paramaters.
+#But since some instructions use more than two parameters we give the function unused paramaters
+def li(r,v,unused):
+    del unused
     registerFile.write_register(instructionMemory.read_operand_1(r),int(instructionMemory.read_operand_2(v)))
 
-#def ld(r,v):
+def ld(r,v,unused):
+    del unused
+    #takes second operand and extracts int value of register: "R1"-> 1 String -> int
+    mema = int(instructionMemory.read_operand_2(v)[1])
+    registerFile.write_register(instructionMemory.read_operand_1(r),dataMemory.read_data(mema))
+
 
 
 
 myDict = {
-"LI" : li
+"LI" : li,
+"LD" : ld
 }
 
     
@@ -348,6 +362,7 @@ myDict = {
 
 
 #Iterates through instructions, Breaks when it reaches "END"
+print("here")
 registerFile.print_register("R1")
 
 for address in range(0, 256):
@@ -357,20 +372,21 @@ for address in range(0, 256):
     if address in instructionMemory.instruction_memory:
 
         #print(instructionMemory.instruction_memory[address])
-        print(address)
-        print(instructionMemory.read_opcode(address))
-        myDict[instructionMemory.read_opcode(address)](address,address)
-
+        
+        print("current opcode:" + instructionMemory.read_opcode(address))
+        myDict[instructionMemory.read_opcode(address)](address,address,address)
+        registerFile.print_register("R1")
+        registerFile.print_register("R2")
+        
 
 
 
         # if oc == "LI":
         #      registerFile.write_register(instructionMemory.read_operand_1(address),int(instructionMemory.read_operand_2(address)))
-       
-        break
+        if address == 2:
+            break
     
 
-registerFile.print_register("R1")
 
 
 
