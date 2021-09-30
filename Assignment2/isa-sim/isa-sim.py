@@ -333,8 +333,13 @@ print('\n---Start of simulation---')
 
 
 def add(r,v1,v2):
-    sum = registerFile.read_register(v1) + registerFile.read_register(v2)
+    #rF.r_r("R#") + rF.r_r("R#")
+    sum = registerFile.read_register(instructionMemory.read_operand_2(v1)) + registerFile.read_register(instructionMemory.read_operand_3(v2))
     registerFile.write_register(instructionMemory.read_operand_1(r),sum)
+
+def sub(r,v1,v2):
+    diff = registerFile.read_register(instructionMemory.read_operand_2(v1)) - registerFile.read_register(instructionMemory.read_operand_3(v2))
+    registerFile.write_register(instructionMemory.read_operand_1(r),diff)
 
 #LI, Load immediate, only uses two paramaters.
 #But since some instructions use more than two parameters we give the function unused paramaters
@@ -345,15 +350,17 @@ def li(r,v,unused):
 def ld(r,v,unused):
     del unused
     #takes second operand and extracts int value of register: "R1"-> 1 String -> int
-    mema = int(instructionMemory.read_operand_2(v)[1])
-    registerFile.write_register(instructionMemory.read_operand_1(r),dataMemory.read_data(mema))
+    memAd = int(instructionMemory.read_operand_2(v)[1])
+    registerFile.write_register(instructionMemory.read_operand_1(r),dataMemory.read_data(memAd))
 
 
 
 
 myDict = {
 "LI" : li,
-"LD" : ld
+"LD" : ld,
+"ADD" : add,
+"SUB" : sub
 }
 
     
@@ -377,13 +384,14 @@ for address in range(0, 256):
         myDict[instructionMemory.read_opcode(address)](address,address,address)
         registerFile.print_register("R1")
         registerFile.print_register("R2")
-        
+        registerFile.print_register("R3")
+        registerFile.print_register("R4")
 
 
 
         # if oc == "LI":
         #      registerFile.write_register(instructionMemory.read_operand_1(address),int(instructionMemory.read_operand_2(address)))
-        if address == 2:
+        if address == 4:
             break
     
 
