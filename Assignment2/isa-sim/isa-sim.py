@@ -331,6 +331,21 @@ print('\n---Start of simulation---')
 # print(instructionMemory.read_operand_1(address))
 # print(instructionMemory.read_operand_2(address))
 
+def li(r,v):
+    registerFile.write_register(instructionMemory.read_operand_1(r),int(instructionMemory.read_operand_2(v)))
+
+#def ld(r,v):
+
+
+
+myDict = {
+"LI" : li
+}
+
+    
+    
+
+
 
 #Iterates through instructions, Breaks when it reaches "END"
 registerFile.print_register("R1")
@@ -344,10 +359,13 @@ for address in range(0, 256):
         #print(instructionMemory.instruction_memory[address])
         print(address)
         print(instructionMemory.read_opcode(address))
-        oc = instructionMemory.read_opcode(address)
+        myDict[instructionMemory.read_opcode(address)](address,address)
 
-        if oc == "LI":
-             registerFile.write_register(instructionMemory.read_operand_1(address),int(instructionMemory.read_operand_2(address)))
+
+
+
+        # if oc == "LI":
+        #      registerFile.write_register(instructionMemory.read_operand_1(address),int(instructionMemory.read_operand_2(address)))
        
         break
     
