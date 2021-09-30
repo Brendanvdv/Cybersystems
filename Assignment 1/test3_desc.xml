@@ -1,0 +1,107 @@
+<fsmddescription>
+
+  <statelist>
+    <state>INITIALIZE</state>
+    <state>TEST</state>
+    <state>ADIVB</state>
+    <state>BMIN1</state>
+    <state>DONE</state>
+  </statelist>
+
+  <initialstate>INITIALIZE</initialstate>
+
+  <inputlist>
+  </inputlist>
+
+  <variablelist>
+    <variable>var_A</variable>
+    <variable>var_B</variable>
+  </variablelist>
+
+  <operationlist>
+    <operation>
+      <name>init_A</name>
+      <expression>var_A = 100</expression>
+    </operation>
+    <operation>
+      <name>init_B</name>
+      <expression>var_B = 5</expression>
+    </operation>
+    <operation>
+      <name>A_div_B</name>
+      <expression>var_A = var_A / var_B </expression>
+    </operation>
+    <operation>
+      <name>B_min_1</name>
+      <expression>var_B = var_B - 1</expression>
+    </operation>
+    </operationlist>
+
+  <conditionlist>
+    <condition>
+      <name>A_equal_B</name>
+      <expression>var_A == var_B</expression>
+    </condition>
+    <condition>
+      <name>A_greater_B</name>
+      <expression>var_A &gt; var_B</expression>
+    </condition>
+    <condition>
+      <name>B_greater_A</name>
+      <expression>var_A &lt; var_B</expression>
+    </condition>
+  </conditionlist>
+
+  <fsmd>
+    <INITIALIZE>
+      <transition>
+        <condition>True</condition>
+        <instruction>init_A init_B</instruction>
+        <nextstate>TEST</nextstate>
+      </transition>
+    </INITIALIZE>
+
+    <TEST>
+      <transition>
+        <condition>A_equal_B</condition>
+        <instruction>NOP</instruction>
+        <nextstate>DONE</nextstate>
+      </transition>
+      <transition>
+        <condition>A_greater_B</condition>
+        <instruction>NOP</instruction>
+        <nextstate>ADIVB</nextstate>
+      </transition>
+      <transition>
+        <condition>B_greater_A</condition>
+        <instruction>NOP</instruction>
+        <nextstate>BMIN1</nextstate>
+      </transition>
+    </TEST>
+
+    <ADIVB>
+      <transition>
+        <condition>True</condition>
+        <instruction>A_div_B</instruction>
+        <nextstate>TEST</nextstate>
+      </transition>
+    </ADIVB>
+
+    <BMIN1>
+      <transition>
+        <condition>True</condition>
+        <instruction>B_min_1</instruction>
+        <nextstate>TEST</nextstate>
+      </transition>
+    </BMIN1>
+
+    <DONE>
+      <transition>
+        <condition>True</condition>
+        <instruction>NOP</instruction>
+        <nextstate>DONE</nextstate>
+      </transition>
+    </DONE>
+  </fsmd>
+
+</fsmddescription>
