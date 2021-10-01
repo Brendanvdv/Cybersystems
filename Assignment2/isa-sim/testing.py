@@ -10,9 +10,15 @@ b = 4
 c =2
 
 
-if a == b or c:
-    print("true")
+# if a == b or c:
+#     print("true")
 
+print(11)
+print('{0:08b}'.format(11))
+
+
+
+print(~11)
 
 '''
 def fw(x):

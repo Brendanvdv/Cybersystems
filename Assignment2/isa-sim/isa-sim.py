@@ -342,21 +342,63 @@ def sub(r,v1,v2):
     registerFile.write_register(instructionMemory.read_operand_1(r),diff)
 
 def bOR(r,v1,v2):
-    r = v1|v2
-    registerFile.write_register(r,)
+
+    #Converts addresses to operand values
+    reg = registerFile.read_register(instructionMemory.read_operand_1(r))
+    var1 = registerFile.read_register(instructionMemory.read_operand_2(v1))
+    var2 = registerFile.read_register(instructionMemory.read_operand_3(v2))
+
+    if reg == var1 or reg == var2:
+        registerFile.write_register(instructionMemory.read_operand_1(r),1)
+    else:
+        registerFile.write_register(instructionMemory.read_operand_1(r),0)    
+
+def bAND(r,v1,v2):
+
+     #Converts addresses to operands
+    reg = registerFile.read_register(instructionMemory.read_operand_1(r))
+    val1 = registerFile.read_register(instructionMemory.read_operand_2(v1))
+    val2 = registerFile.read_register(instructionMemory.read_operand_3(v2))
+
+    
+    if reg == val1 and reg == val2:
+        registerFile.write_register(instructionMemory.read_operand_1(r),1)
+    else:
+        registerFile.write_register(instructionMemory.read_operand_1(r),0)
+
+#~n = -n - 1
+#how to store negative int since its larger than 8 bits
+#
+def bNOT(r,v1,unused):
+    del unused
+
+    val1 = registerFile.read_register(instructionMemory.read_operand_2(v1))
+    nv1 = -val1 -1
+    print(nv1)
+
+    registerFile.write_register(instructionMemory.read_operand_1(r),nv1)
+
     
 
 #LI, Load immediate, only uses two paramaters.
 #But since some instructions use more than two parameters we give the function unused paramaters
 def li(r,v,unused):
     del unused
+
+    #load op2 into op1
     registerFile.write_register(instructionMemory.read_operand_1(r),int(instructionMemory.read_operand_2(v)))
 
 def ld(r,v,unused):
     del unused
+
     #takes second operand and extracts int value of register: "R1"-> 1 String -> int
     memAd = int(instructionMemory.read_operand_2(v)[1])
+
+    #load data mememory into op 1 
     registerFile.write_register(instructionMemory.read_operand_1(r),dataMemory.read_data(memAd))
+
+def jr(r,v,unused):
+    return
 
 
 
@@ -365,41 +407,46 @@ myDict = {
 "LI" : li,
 "LD" : ld,
 "ADD" : add,
-"SUB" : sub
+"SUB" : sub,
+"OR" : bOR,
+"AND" : bAND,
+"NOT" : bNOT
 }
 
     
-    
+address = 0 
+
+while program_counter <= 256 or program_counter <= max_cycles:
 
 
+# Iterates through instructions, Breaks when it reaches "END"
 
-#Iterates through instructions, Breaks when it reaches "END"
-print("here")
-registerFile.print_register("R1")
-
-for address in range(0, 256):
+#for address in range(0, 256):
     if instructionMemory.read_opcode(address)  == "END":
         break
 
     if address in instructionMemory.instruction_memory:
 
-        #print(instructionMemory.instruction_memory[address])
+       
         
-        print("current opcode:" + instructionMemory.read_opcode(address))
+        print("current opcode:" + instructionMemory.read_opcode(address) + " | Address: " + str(address))
         myDict[instructionMemory.read_opcode(address)](address,address,address)
+        registerFile.print_register("R0")
         registerFile.print_register("R1")
         registerFile.print_register("R2")
         registerFile.print_register("R3")
         registerFile.print_register("R4")
+        registerFile.print_register("R5")
+        registerFile.print_register("R6")
+        registerFile.print_register("R7")
 
 
+        address += 1
 
-        # if oc == "LI":
-        #      registerFile.write_register(instructionMemory.read_operand_1(address),int(instructionMemory.read_operand_2(address)))
-        if address == 4:
+        #Needed while implementing instructions
+        if address == 7:
             break
     
-
 
 
 
