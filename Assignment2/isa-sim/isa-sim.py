@@ -341,6 +341,11 @@ def sub(r,v1,v2):
     diff = registerFile.read_register(instructionMemory.read_operand_2(v1)) - registerFile.read_register(instructionMemory.read_operand_3(v2))
     registerFile.write_register(instructionMemory.read_operand_1(r),diff)
 
+def bOR(r,v1,v2):
+    r = v1|v2
+    registerFile.write_register(r,)
+    
+
 #LI, Load immediate, only uses two paramaters.
 #But since some instructions use more than two parameters we give the function unused paramaters
 def li(r,v,unused):

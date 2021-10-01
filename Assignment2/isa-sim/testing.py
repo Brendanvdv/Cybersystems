@@ -1,10 +1,17 @@
 
-s1 = "R1"
+#s1 = "R1"
 
-print(s1[1])
+#print(s1[1])
 # for element in s1[1]:
 #     print(int(element))
 
+a = 2
+b = 4
+c =2
+
+
+if a == b or c:
+    print("true")
 
 
 '''
