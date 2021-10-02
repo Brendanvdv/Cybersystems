@@ -1,3 +1,4 @@
+from os import read
 import sys
 import re
 
@@ -343,28 +344,33 @@ def sub(r,v1,v2):
 
 def bOR(r,v1,v2):
 
-    #Converts addresses to operand values
-    reg = registerFile.read_register(instructionMemory.read_operand_1(r))
+    
+    reg = instructionMemory.read_operand_1(r)
     var1 = registerFile.read_register(instructionMemory.read_operand_2(v1))
     var2 = registerFile.read_register(instructionMemory.read_operand_3(v2))
 
-    if reg == var1 or reg == var2:
-        registerFile.write_register(instructionMemory.read_operand_1(r),1)
-    else:
-        registerFile.write_register(instructionMemory.read_operand_1(r),0)    
+    bitOp = var1|var2
 
+    registerFile.write_register(reg,bitOp)
+
+        
 def bAND(r,v1,v2):
 
-     #Converts addresses to operands
-    reg = registerFile.read_register(instructionMemory.read_operand_1(r))
+    
+    reg = instructionMemory.read_operand_1(r)
     val1 = registerFile.read_register(instructionMemory.read_operand_2(v1))
     val2 = registerFile.read_register(instructionMemory.read_operand_3(v2))
 
     
-    if reg == val1 and reg == val2:
-        registerFile.write_register(instructionMemory.read_operand_1(r),1)
-    else:
-        registerFile.write_register(instructionMemory.read_operand_1(r),0)
+    bitOp = val1 & val2
+
+    registerFile.write_register(reg,bitOp)
+
+
+    # if reg == val1 and reg == val2:
+    #     registerFile.write_register(instructionMemory.read_operand_1(r),1)
+    # else:
+    #     registerFile.write_register(instructionMemory.read_operand_1(r),0)
 
 #~n = -n - 1
 #how to store negative int since its larger than 8 bits
@@ -373,9 +379,10 @@ def bNOT(r,v1,unused):
     del unused
 
     val1 = registerFile.read_register(instructionMemory.read_operand_2(v1))
-    #v1 = abs(~val1)
     
-    registerFile.write_register(instructionMemory.read_operand_1(r),~val1)
+    bitOp = ~val1
+    
+    registerFile.write_register(instructionMemory.read_operand_1(r),bitOp)
 
     
 
@@ -400,8 +407,10 @@ def ld(r,v,unused):
 def sd(r,v,unused):
     del unused
 
-    dataMemory.write_data(int(instructionMemory.read_operand_2(r)[1]),registerFile.read_register(instructionMemory.read_operand_1(v)))
-    return
+    dataMemory.write_data(registerFile.read_register(instructionMemory.read_operand_2(v)),registerFile.read_register(instructionMemory.read_operand_1(r)))
+
+    #dataMemory.write_data(int(instructionMemory.read_operand_2(r)[1]),registerFile.read_register(instructionMemory.read_operand_1(v)))
+    
 
 
 #Do nothing
@@ -496,6 +505,7 @@ while program_counter <= 255 or current_cycle <= max_cycles:
         print("Data Memory:")
         dataMemory.print_data(0)
         dataMemory.print_data(1)
+        dataMemory.print_data(2)
 
         if instructionMemory.read_opcode(program_counter) == "END":
 
@@ -620,7 +630,8 @@ print('\n---End of simulation---\n')
 
 '''
 
-1) PC: Incorrect?
+1) Have I hardcoded?
+2) PC: Incorrect?
 
 
 '''

@@ -9,6 +9,7 @@ a = 2
 b = 4
 c =2
 
+print(a|b)
 
 # if a == b or c:
 #     print("true")
