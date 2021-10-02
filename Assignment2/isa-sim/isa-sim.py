@@ -349,10 +349,6 @@ def bAND(r,v1,v2):
     registerFile.write_register(reg,bitOp)
 
 
-    # if reg == val1 and reg == val2:
-    #     registerFile.write_register(instructionMemory.read_operand_1(r),1)
-    # else:
-    #     registerFile.write_register(instructionMemory.read_operand_1(r),0)
 
 #~n = -n - 1
 #how to store negative int since its larger than 8 bits
@@ -379,8 +375,7 @@ def li(r,v,unused):
 def ld(r,v,unused):
     del unused
 
-    #takes second operand and extracts int value of register: "R1"-> 1 String -> int
-    memAd = int(instructionMemory.read_operand_2(v)[1])
+    memAd = registerFile.read_register(instructionMemory.read_operand_2(v))
 
     #load data mememory into op 1 
     registerFile.write_register(instructionMemory.read_operand_1(r),dataMemory.read_data(memAd))
@@ -391,7 +386,7 @@ def sd(r,v,unused):
 
     dataMemory.write_data(registerFile.read_register(instructionMemory.read_operand_2(v)),registerFile.read_register(instructionMemory.read_operand_1(r)))
 
-    #dataMemory.write_data(int(instructionMemory.read_operand_2(r)[1]),registerFile.read_register(instructionMemory.read_operand_1(v)))
+    
     
 
 
@@ -456,9 +451,8 @@ myDict = {
 while program_counter <= 255 and current_cycle < max_cycles:
 
 
-# Iterates through instructions, Breaks when it reaches "END"
 
-#for address in range(0, 256):
+    #While loop breaks if opcode is "END"
     if instructionMemory.read_opcode(program_counter)  == "END":
         break
 
@@ -500,7 +494,7 @@ while program_counter <= 255 and current_cycle < max_cycles:
         #print("current opcode:" + instructionMemory.read_opcode(program_counter))
 
         #Needed while implementing instrucions
-        # if program_counter == 25:
+        # if program_counter == 6:
         #     break
         
         program_counter += 1
@@ -533,52 +527,11 @@ while program_counter <= 255 and current_cycle < max_cycles:
 #             registerFile.print_register("R2")
 #             break
         
-    
 
 
 
 
 
-
-
-
-# def ocLI(r,v):
-#      registerFile.write_register(instructionMemory.read_operand_1(r),instructionMemory.read_operand_2(v))
-   
-# opcodes = {"LI": ocLI
-
-
-#                 }
-
-# opcodes["LI"](0,1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# def switcher(opcode):
-#     return{
-
-#         'LI': registerFile.write_register(instructionMemory.read_operand_1(address),  instructionMemory.read_operand_2(address))
-
-#     }[opcode]
-
-
-
-# switcher1 = {
-
-#     LI: registerFile.write_register(instructionMemory.read_operand_1,  instructionMemory.read_operand_2)
-# }
 
 
 
@@ -619,7 +572,7 @@ print('\n---End of simulation---\n')
 
 1) Have I hardcoded functions/instructions?
 2) PC 9: Incorrect?
-3) Best way to print registers and data memory?
+3) paramaters for functions
 
 
 '''
