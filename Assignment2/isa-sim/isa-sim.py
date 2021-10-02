@@ -373,9 +373,9 @@ def bNOT(r,v1,unused):
     del unused
 
     val1 = registerFile.read_register(instructionMemory.read_operand_2(v1))
-    v1 = abs(~val1)
+    #v1 = abs(~val1)
     
-    registerFile.write_register(instructionMemory.read_operand_1(r),v1)
+    registerFile.write_register(instructionMemory.read_operand_1(r),~val1)
 
     
 
@@ -421,15 +421,26 @@ def jeq(r,v1,v2):
 
     global program_counter
 
-    if instructionMemory.read_operand_2(v1) == instructionMemory.read_operand_3(v2):
+    if registerFile.read_register(instructionMemory.read_operand_2(v1)) == registerFile.read_register(instructionMemory.read_operand_3(v2)):
+
+        program_counter = registerFile.read_register(instructionMemory.read_operand_1(r)) -1
+
+def jlt(r,v1,v2):
+
+    global program_counter
+
+    if registerFile.read_register(instructionMemory.read_operand_2(v1)) < registerFile.read_register(instructionMemory.read_operand_3(v2)):
 
         program_counter = registerFile.read_register(instructionMemory.read_operand_1(r)) -1
 
 
-    
-    
+def end(unused1,unused2,unused3):
 
+    del unused1,unused2,unused3
 
+    global current_cycle
+
+    current_cycle = max_cycles 
 
 
 myDict = {
@@ -443,7 +454,8 @@ myDict = {
 "NOP" : nop,
 "JR" : jr,
 "SD" : sd,
-"JEQ" : jeq
+"JEQ" : jeq,
+"JLT" : jlt
 }
 
 
@@ -461,7 +473,7 @@ while program_counter <= 255 or current_cycle <= max_cycles:
     if program_counter in instructionMemory.instruction_memory:
 
        
-        print("current opcode:" + instructionMemory.read_opcode(program_counter) + " | PC: " + str(program_counter))
+        print("\ncurrent opcode:" + instructionMemory.read_opcode(program_counter) + " | PC: " + str(program_counter))
         myDict[instructionMemory.read_opcode(program_counter)](program_counter,program_counter,program_counter)
        
         registerFile.print_register("R0")
@@ -472,20 +484,31 @@ while program_counter <= 255 or current_cycle <= max_cycles:
         registerFile.print_register("R5")
         registerFile.print_register("R6")
         registerFile.print_register("R7")
+        registerFile.print_register("R8")
+        registerFile.print_register("R9")
+        registerFile.print_register("R10")
+        registerFile.print_register("R11")
+        registerFile.print_register("R12")  
         registerFile.print_register("R13")
+        registerFile.print_register("R14")
+        registerFile.print_register("R15")
 
         print("Data Memory:")
         dataMemory.print_data(0)
         dataMemory.print_data(1)
 
-        #registerFile.print_register("R15")
+        if instructionMemory.read_opcode(program_counter) == "END":
+
+            print("Executes in: " + str(current_cycle) + " Cycles")
+
+       
 
         #print("current pc: " + str(program_counter))
         #print("current opcode:" + instructionMemory.read_opcode(program_counter))
 
         #Needed while implementing instrucions
-        if program_counter == 17:
-            break
+        # if program_counter == 25:
+        #     break
         
         program_counter += 1
         current_cycle += 1
@@ -593,3 +616,11 @@ print('\n---End of simulation---\n')
 
 # python isa-sim.py 50 test_1/program_1.txt test_1/data_mem_1.txt
 # python isa-sim.py 50 test_2/program_2.txt test_2/data_mem_2.txt
+
+
+'''
+
+1) PC: Incorrect?
+
+
+'''
