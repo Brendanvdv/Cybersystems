@@ -446,13 +446,14 @@ myDict = {
 "JR" : jr,
 "SD" : sd,
 "JEQ" : jeq,
-"JLT" : jlt
+"JLT" : jlt,
+"END" : end
 }
 
 
 
 
-while program_counter <= 255 and current_cycle <= max_cycles:
+while program_counter <= 255 and current_cycle < max_cycles:
 
 
 # Iterates through instructions, Breaks when it reaches "END"
@@ -486,6 +487,7 @@ while program_counter <= 255 and current_cycle <= max_cycles:
 
         
         registerFile.print_all()
+        print("\n") 
         dataMemory.print_used()
 
         #if instructionMemory.read_opcode(program_counter) == "END":
@@ -504,7 +506,7 @@ while program_counter <= 255 and current_cycle <= max_cycles:
         program_counter += 1
         current_cycle += 1
 
-        print("Executes in " + str(current_cycle) + " cycles.")
+        print("\nExecutes in " + str(current_cycle) + " cycles.")
 
         
 
