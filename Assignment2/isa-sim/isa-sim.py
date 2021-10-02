@@ -315,18 +315,20 @@ print('\n---Start of simulation---')
 
 #####################################
 
+#adds two register values and stores into third register
 def add(r,v1,v2):
     #rF.r_r("R#") + rF.r_r("R#")
     sum = registerFile.read_register(instructionMemory.read_operand_2(v1)) + registerFile.read_register(instructionMemory.read_operand_3(v2))
     registerFile.write_register(instructionMemory.read_operand_1(r),sum)
 
+#subtracts two register values
 def sub(r,v1,v2):
     diff = registerFile.read_register(instructionMemory.read_operand_2(v1)) - registerFile.read_register(instructionMemory.read_operand_3(v2))
     registerFile.write_register(instructionMemory.read_operand_1(r),diff)
 
+#Uses | operator on two register values and stores it into third register
 def bOR(r,v1,v2):
 
-    
     reg = instructionMemory.read_operand_1(r)
     var1 = registerFile.read_register(instructionMemory.read_operand_2(v1))
     var2 = registerFile.read_register(instructionMemory.read_operand_3(v2))
@@ -335,7 +337,7 @@ def bOR(r,v1,v2):
 
     registerFile.write_register(reg,bitOp)
 
-        
+#Uses & operator on two register values and stores it into third register       
 def bAND(r,v1,v2):
 
     
@@ -348,11 +350,7 @@ def bAND(r,v1,v2):
 
     registerFile.write_register(reg,bitOp)
 
-
-
-#~n = -n - 1
-#how to store negative int since its larger than 8 bits
-
+#Uses ~ operator on register value and stores it into another register
 def bNOT(r,v1,unused):
     del unused
 
@@ -366,12 +364,14 @@ def bNOT(r,v1,unused):
 
 #LI, Load immediate, only uses two paramaters.
 #But since some instructions use more than two parameters we give the function unused paramaters
+#stores provided value into register
 def li(r,v,unused):
     del unused
 
     #load op2 into op1
     registerFile.write_register(instructionMemory.read_operand_1(r),int(instructionMemory.read_operand_2(v)))
 
+#Takes value of register(v), then takes value of datamemory with the same number (DM(v)), then stores it into register(r)
 def ld(r,v,unused):
     del unused
 
@@ -380,29 +380,29 @@ def ld(r,v,unused):
     #load data mememory into op 1 
     registerFile.write_register(instructionMemory.read_operand_1(r),dataMemory.read_data(memAd))
 
-
+#takes register value (r), and stores into dataMemory of the same adress  as register(v) value
 def sd(r,v,unused):
     del unused
 
     dataMemory.write_data(registerFile.read_register(instructionMemory.read_operand_2(v)),registerFile.read_register(instructionMemory.read_operand_1(r)))
 
     
-    
-
 
 #Do nothing
 def nop(unused,unused1,unused3):
     del unused,unused1,unused3
     return
 
-def jr(r,v,unused):
-    del r, unused
+#changes program counter to value assigned (v)
+def jr(unused1,v,unused2):
+    del unused1, unused2
 
     global program_counter
     
     #-1 beacuse program counter will +1 in while loop
     program_counter = registerFile.read_register(instructionMemory.read_operand_1(v)) -1
 
+#changes program counter to value of register (r), if two registers are equal(v1,v2)
 def jeq(r,v1,v2):
 
     global program_counter
@@ -411,6 +411,7 @@ def jeq(r,v1,v2):
 
         program_counter = registerFile.read_register(instructionMemory.read_operand_1(r)) -1
 
+#changes program counter to value of register (r), if register (v1) is less than register(v2)
 def jlt(r,v1,v2):
 
     global program_counter
@@ -420,6 +421,7 @@ def jlt(r,v1,v2):
         program_counter = registerFile.read_register(instructionMemory.read_operand_1(r)) -1
 
 
+#To end simulation just make current cycle equal max cycle so it will get caught in if statement
 def end(unused1,unused2,unused3):
 
     del unused1,unused2,unused3
@@ -429,7 +431,7 @@ def end(unused1,unused2,unused3):
     current_cycle = max_cycles 
 
 
-myDict = {
+instrDict = {
 "LI" : li,
 "LD" : ld,
 "ADD" : add,
@@ -450,114 +452,26 @@ myDict = {
 
 while program_counter <= 255 and current_cycle < max_cycles:
 
-
-
     #While loop breaks if opcode is "END"
     if instructionMemory.read_opcode(program_counter)  == "END":
         break
 
+    #makes sure the program counter exists. Not really neccesary.
     if program_counter in instructionMemory.instruction_memory:
 
-       
-        print("\ncurrent opcode:" + instructionMemory.read_opcode(program_counter) + " | PC: " + str(program_counter))
-        myDict[instructionMemory.read_opcode(program_counter)](program_counter,program_counter,program_counter)
-       
-        # registerFile.print_register("R0")
-        # registerFile.print_register("R1")
-        # registerFile.print_register("R2")
-        # registerFile.print_register("R3")
-        # registerFile.print_register("R4")
-        # registerFile.print_register("R5")
-        # registerFile.print_register("R6")
-        # registerFile.print_register("R7")
-        # registerFile.print_register("R8")
-        # registerFile.print_register("R9")
-        # registerFile.print_register("R10")
-        # registerFile.print_register("R11")
-        # registerFile.print_register("R12")  
-        # registerFile.print_register("R13")
-        # registerFile.print_register("R14")
-        # registerFile.print_register("R15")
-
+        print("\nCurrent Opcode: " + instructionMemory.read_opcode(program_counter) + " | PC: " + str(program_counter))
         
+        #Uses dictionary to call functions.
+        instrDict[instructionMemory.read_opcode(program_counter)](program_counter,program_counter,program_counter)
+       
         registerFile.print_all()
         print("\n") 
         dataMemory.print_used()
 
-        #if instructionMemory.read_opcode(program_counter) == "END":
-
-        
-
-       
-
-        #print("current pc: " + str(program_counter))
-        #print("current opcode:" + instructionMemory.read_opcode(program_counter))
-
-        #Needed while implementing instrucions
-        # if program_counter == 6:
-        #     break
-        
         program_counter += 1
         current_cycle += 1
 
         print("\nExecutes in " + str(current_cycle) + " cycles.")
-
-        
-
-
-
-
-
-# runs adress 2 in progam_1
-# print(instructionMemory.instruction_memory[1]["opcode"])
-# dataMemory.print_data(1)
-# print(instructionMemory.read_operand_1(1))
-
-# for address in range(0, 256):
-#     if instructionMemory.read_opcode(address)  == "END":
-
-#         break
-    
-#     if address in instructionMemory.instruction_memory:
-#         if instructionMemory.instruction_memory[address]["opcode"] == "LD":
-#             registerFile.print_register("R2")
-#             #dataMemory.write_data("R2",9)
-#             #dataMemory.write_data(instructionMemory.read_operand_1(address),dataMemory.read_data(1))
-#             registerFile.write_register(instructionMemory.read_operand_1(address),dataMemory.read_data(1))
-#             registerFile.print_register("R2")
-#             break
-        
-
-
-
-
-
-
-
-
-
-
-
-# switcher = {
-
-#     ADD: 
-#     SUB:
-#     OR:
-#     AND: 
-#     NOT:
-#     LI00:
-#     LD:
-#     SD:
-#     JR:
-#     JEQ:
-#     JLT:
-#     NOP:
-#     END:
-
-
-# }
-
-
 
 ####################################
 
@@ -573,6 +487,7 @@ print('\n---End of simulation---\n')
 1) Have I hardcoded functions/instructions?
 2) PC 9: Incorrect?
 3) paramaters for functions
+4) get rid of if statement? ln 460
 
 
 '''
