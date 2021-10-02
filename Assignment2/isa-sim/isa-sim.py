@@ -315,24 +315,6 @@ print('\n---Start of simulation---')
 
 #####################################
 
-
-
-#print(registerFile.read_register("R2"))
-
-#print(instructionMemory.read_opcode(7))
-
-# print(type(instructionMemory.read_operand_1(0)))
-# print(type(instructionMemory.read_operand_2(0)))
-# print(type(instructionMemory.print_instruction(28)))
-
-#Dictionary
-#print(instructionMemory.instruction_memory[0]["opcode"])
-
-# print(address, instructionMemory.read_opcode(address))
-# print(instructionMemory.read_operand_1(address))
-# print(instructionMemory.read_operand_2(address))
-
-
 def add(r,v1,v2):
     #rF.r_r("R#") + rF.r_r("R#")
     sum = registerFile.read_register(instructionMemory.read_operand_2(v1)) + registerFile.read_register(instructionMemory.read_operand_3(v2))
@@ -470,7 +452,7 @@ myDict = {
 
 
 
-while program_counter <= 255 or current_cycle <= max_cycles:
+while program_counter <= 255 and current_cycle <= max_cycles:
 
 
 # Iterates through instructions, Breaks when it reaches "END"
@@ -485,31 +467,30 @@ while program_counter <= 255 or current_cycle <= max_cycles:
         print("\ncurrent opcode:" + instructionMemory.read_opcode(program_counter) + " | PC: " + str(program_counter))
         myDict[instructionMemory.read_opcode(program_counter)](program_counter,program_counter,program_counter)
        
-        registerFile.print_register("R0")
-        registerFile.print_register("R1")
-        registerFile.print_register("R2")
-        registerFile.print_register("R3")
-        registerFile.print_register("R4")
-        registerFile.print_register("R5")
-        registerFile.print_register("R6")
-        registerFile.print_register("R7")
-        registerFile.print_register("R8")
-        registerFile.print_register("R9")
-        registerFile.print_register("R10")
-        registerFile.print_register("R11")
-        registerFile.print_register("R12")  
-        registerFile.print_register("R13")
-        registerFile.print_register("R14")
-        registerFile.print_register("R15")
+        # registerFile.print_register("R0")
+        # registerFile.print_register("R1")
+        # registerFile.print_register("R2")
+        # registerFile.print_register("R3")
+        # registerFile.print_register("R4")
+        # registerFile.print_register("R5")
+        # registerFile.print_register("R6")
+        # registerFile.print_register("R7")
+        # registerFile.print_register("R8")
+        # registerFile.print_register("R9")
+        # registerFile.print_register("R10")
+        # registerFile.print_register("R11")
+        # registerFile.print_register("R12")  
+        # registerFile.print_register("R13")
+        # registerFile.print_register("R14")
+        # registerFile.print_register("R15")
 
-        print("Data Memory:")
-        dataMemory.print_data(0)
-        dataMemory.print_data(1)
-        dataMemory.print_data(2)
+        
+        registerFile.print_all()
+        dataMemory.print_used()
 
-        if instructionMemory.read_opcode(program_counter) == "END":
+        #if instructionMemory.read_opcode(program_counter) == "END":
 
-            print("Executes in: " + str(current_cycle) + " Cycles")
+        
 
        
 
@@ -522,6 +503,10 @@ while program_counter <= 255 or current_cycle <= max_cycles:
         
         program_counter += 1
         current_cycle += 1
+
+        print("Executes in " + str(current_cycle) + " cycles.")
+
+        
 
 
 
@@ -630,8 +615,9 @@ print('\n---End of simulation---\n')
 
 '''
 
-1) Have I hardcoded?
-2) PC: Incorrect?
+1) Have I hardcoded functions/instructions?
+2) PC 9: Incorrect?
+3) Best way to print registers and data memory?
 
 
 '''
