@@ -368,15 +368,14 @@ def bAND(r,v1,v2):
 
 #~n = -n - 1
 #how to store negative int since its larger than 8 bits
-#
+
 def bNOT(r,v1,unused):
     del unused
 
     val1 = registerFile.read_register(instructionMemory.read_operand_2(v1))
-    nv1 = -val1 -1
-    print(nv1)
-
-    registerFile.write_register(instructionMemory.read_operand_1(r),nv1)
+    v1 = abs(~val1)
+    
+    registerFile.write_register(instructionMemory.read_operand_1(r),v1)
 
     
 
@@ -397,8 +396,38 @@ def ld(r,v,unused):
     #load data mememory into op 1 
     registerFile.write_register(instructionMemory.read_operand_1(r),dataMemory.read_data(memAd))
 
-def jr(r,v,unused):
+
+def sd(r,v,unused):
+    del unused
+
+    dataMemory.write_data(int(instructionMemory.read_operand_2(r)[1]),registerFile.read_register(instructionMemory.read_operand_1(v)))
     return
+
+
+#Do nothing
+def nop(unused,unused1,unused3):
+    del unused,unused1,unused3
+    return
+
+def jr(r,v,unused):
+    del r, unused
+
+    global program_counter
+    
+    #-1 beacuse program counter will +1 in while loop
+    program_counter = registerFile.read_register(instructionMemory.read_operand_1(v)) -1
+
+def jeq(r,v1,v2):
+
+    global program_counter
+
+    if instructionMemory.read_operand_2(v1) == instructionMemory.read_operand_3(v2):
+
+        program_counter = registerFile.read_register(instructionMemory.read_operand_1(r)) -1
+
+
+    
+    
 
 
 
@@ -410,27 +439,31 @@ myDict = {
 "SUB" : sub,
 "OR" : bOR,
 "AND" : bAND,
-"NOT" : bNOT
+"NOT" : bNOT,
+"NOP" : nop,
+"JR" : jr,
+"SD" : sd,
+"JEQ" : jeq
 }
 
-    
-address = 0 
 
-while program_counter <= 256 or program_counter <= max_cycles:
+
+
+while program_counter <= 255 or current_cycle <= max_cycles:
 
 
 # Iterates through instructions, Breaks when it reaches "END"
 
 #for address in range(0, 256):
-    if instructionMemory.read_opcode(address)  == "END":
+    if instructionMemory.read_opcode(program_counter)  == "END":
         break
 
-    if address in instructionMemory.instruction_memory:
+    if program_counter in instructionMemory.instruction_memory:
 
        
-        
-        print("current opcode:" + instructionMemory.read_opcode(address) + " | Address: " + str(address))
-        myDict[instructionMemory.read_opcode(address)](address,address,address)
+        print("current opcode:" + instructionMemory.read_opcode(program_counter) + " | PC: " + str(program_counter))
+        myDict[instructionMemory.read_opcode(program_counter)](program_counter,program_counter,program_counter)
+       
         registerFile.print_register("R0")
         registerFile.print_register("R1")
         registerFile.print_register("R2")
@@ -439,15 +472,23 @@ while program_counter <= 256 or program_counter <= max_cycles:
         registerFile.print_register("R5")
         registerFile.print_register("R6")
         registerFile.print_register("R7")
+        registerFile.print_register("R13")
 
+        print("Data Memory:")
+        dataMemory.print_data(0)
+        dataMemory.print_data(1)
 
-        address += 1
+        #registerFile.print_register("R15")
 
-        #Needed while implementing instructions
-        if address == 7:
+        #print("current pc: " + str(program_counter))
+        #print("current opcode:" + instructionMemory.read_opcode(program_counter))
+
+        #Needed while implementing instrucions
+        if program_counter == 17:
             break
-    
-
+        
+        program_counter += 1
+        current_cycle += 1
 
 
 

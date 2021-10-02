@@ -13,13 +13,14 @@ c =2
 # if a == b or c:
 #     print("true")
 
-print(11)
-print('{0:08b}'.format(11))
-
+#print(a.bit_length())
+# print('{0:08b}'.format(11))
+# print('{0:16b}'.format(11))
 
 
 print(~11)
-
+# print(~11)
+# print(int('00001011'))
 '''
 def fw(x):
     return {
