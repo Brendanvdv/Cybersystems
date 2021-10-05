@@ -457,21 +457,20 @@ while program_counter <= 255 and current_cycle < max_cycles:
         break
      #test
     #makes sure the program counter exists. Not really neccesary.
-    if program_counter in instructionMemory.instruction_memory:
+    
+    print("\nCurrent Opcode: " + instructionMemory.read_opcode(program_counter) + " | PC: " + str(program_counter))
+    
+    #Uses dictionary to call functions.
+    instrDict[instructionMemory.read_opcode(program_counter)](program_counter,program_counter,program_counter)
+    
+    registerFile.print_all()
+    print("\n") 
+    dataMemory.print_used()
 
-        print("\nCurrent Opcode: " + instructionMemory.read_opcode(program_counter) + " | PC: " + str(program_counter))
-        
-        #Uses dictionary to call functions.
-        instrDict[instructionMemory.read_opcode(program_counter)](program_counter,program_counter,program_counter)
-       
-        registerFile.print_all()
-        print("\n") 
-        dataMemory.print_used()
+    program_counter += 1
+    current_cycle += 1
 
-        program_counter += 1
-        current_cycle += 1
-
-        print("\nExecutes in " + str(current_cycle) + " cycles.")
+    print("\nExecutes in " + str(current_cycle) + " cycles.")
 
 ####################################
 
@@ -479,7 +478,7 @@ print('\n---End of simulation---\n')
 
 
 # python isa-sim.py 50 test_1/program_1.txt test_1/data_mem_1.txt
-# python isa-sim.py 50 test_2/program_2.txt test_2/data_mem_2.txt
+# python isa-sim.py 754 test_2/program_2.txt test_2/data_mem_2.txt
 
 
 '''
