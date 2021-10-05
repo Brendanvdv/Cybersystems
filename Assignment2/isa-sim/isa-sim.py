@@ -455,7 +455,7 @@ while program_counter <= 255 and current_cycle < max_cycles:
     #While loop breaks if opcode is "END"
     if instructionMemory.read_opcode(program_counter)  == "END":
         break
-
+     #test
     #makes sure the program counter exists. Not really neccesary.
     if program_counter in instructionMemory.instruction_memory:
 
@@ -489,5 +489,4 @@ print('\n---End of simulation---\n')
 3) paramaters for functions
 4) get rid of if statement? ln 460
 
-
-'''
+''' 
