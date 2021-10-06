@@ -472,6 +472,7 @@ while program_counter <= 255 and current_cycle < max_cycles:
 
     print("\nExecutes in " + str(current_cycle) + " cycles.")
 
+
 ####################################
 
 print('\n---End of simulation---\n')
@@ -479,7 +480,7 @@ print('\n---End of simulation---\n')
 
 # python isa-sim.py 50 test_1/program_1.txt test_1/data_mem_1.txt
 # python isa-sim.py 754 test_2/program_2.txt test_2/data_mem_2.txt
-
+# python isa-sim.py 20 test_3/program_4.txt test_3/data_mem_3.txt
 
 '''
 
