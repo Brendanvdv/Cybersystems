@@ -361,7 +361,6 @@ def bNOT(r,v1,unused):
     registerFile.write_register(instructionMemory.read_operand_1(r),bitOp)
 
     
-
 #LI, Load immediate, only uses two paramaters.
 #But since some instructions use more than two parameters we give the function unused paramaters
 #stores provided value into register
@@ -387,7 +386,6 @@ def sd(r,v,unused):
     dataMemory.write_data(registerFile.read_register(instructionMemory.read_operand_2(v)),registerFile.read_register(instructionMemory.read_operand_1(r)))
 
     
-
 #Do nothing
 def nop(unused,unused1,unused3):
     del unused,unused1,unused3
@@ -450,12 +448,12 @@ instrDict = {
 
 
 
-while program_counter <= 255 and current_cycle < max_cycles:
+while program_counter <= 255 and current_cycle <= max_cycles:
 
     #While loop breaks if opcode is "END"
     if instructionMemory.read_opcode(program_counter)  == "END":
         break
-     #test
+     
     #makes sure the program counter exists. Not really neccesary.
     
     print("\nCurrent Opcode: " + instructionMemory.read_opcode(program_counter) + " | PC: " + str(program_counter))
@@ -477,14 +475,8 @@ while program_counter <= 255 and current_cycle < max_cycles:
 
 print('\n---End of simulation---\n')
 
-
+#To run simulator:
 # python isa-sim.py 50 test_1/program_1.txt test_1/data_mem_1.txt
 # python isa-sim.py 754 test_2/program_2.txt test_2/data_mem_2.txt
-# python isa-sim.py 20 test_3/program_4.txt test_3/data_mem_3.txt
+# python isa-sim.py 100 test_3/program_3.txt test_3/data_mem_3.txt
 
-'''
-
-1) If statement, hard coding?
-2) How to count each number?
-
-''' 

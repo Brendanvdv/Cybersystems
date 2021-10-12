@@ -1,3 +1,30 @@
+#File used for calculations and rough work
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Python 3 program to count frequencies

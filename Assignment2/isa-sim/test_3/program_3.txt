@@ -1,25 +1,25 @@
-# Program to bubble sort an array of 10 values
-# Check the expected output and compare it with the one of your simulator
-# The format is: <instruction mem. address>: <OPCODE> <COMMA SEPARATED OPERANDS>;
+#The format is: <instruction mem. address>: <OPCODE> <COMMA SEPARATED OPERANDS>;
 # All numers are decimal 
 
-# Copy the array from source (0-9) to destination (10-19)
-0: LI R1, 0;  # R1 is the read pointer
-1: LI R2, 0;  # R2 is the counter
-2: LI R3, 2;  # R3 is what we want compare to
-3: LI R4, 10;  # R4 is the counter for copy
-4: LI R6, 1; # register which will be added
-5: LI R13, 13;
-# R5 is the temporary buffer for copy
-6: LD R5, R1;  # Copy: address**
-7: ADD R1, R1, R6;  # Done copy address**
+0: LI, R1, 10; #Load the value(Array length) into R1
+1: LI, R2, 2;  #Load the value(Number whos frequency you want) into R2
+2: LI, R3, 0;  #Load the value(Occurence) into R3
+4: LI, R4, 1;  #Load the value(Incrementor) into R4
+5: LI, R5, 15;  #Load the value(Index) into R5
+6: LI, R6, 10;  #Load the value(Index) into R6
+7: LI, R7, 10;  #Load the value(DataMemory index For Occurance) into R7
+8: LI, R8, 17; #Load the value(Index) into R4
+9: LI, R9, 0;  #Load the value(Pointer) into R9
 
-8: JEQ R10, R5,R3;  # Read form mem(read pointer)
-9: JEQ R13, R1,R4;  # Write to mem(write pointer)
-10: JR R5;  # Go to IS EQUAL
+10: LD, R10, R9; #Read from memory R10 = memory[R9]. Temporary Copy
 
-11: ADD R2, R2, R6;  # Decrement counter**
-12: JEQ R13, R1,R4;  # Increment read pointer**
-13: JR R6;  # Increment write pointer**
+11: JEQ, R8, R9, R1; #Pointer equals Length of Array
+12: ADD, R9, R9, R4; #Increment Pointer
+13: JEQ, R5, R10, R2; #Pointer Number equals Number
+14: JR, R6; #Loop
 
-14: END;
+15: ADD, R3, R3, R4; #Increments Occurence
+16: JR, R6; #Loop
+
+17: SD, R3, R7; #Stores R3 into memory[R7] 
+18: END;
