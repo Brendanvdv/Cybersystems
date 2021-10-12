@@ -484,9 +484,7 @@ print('\n---End of simulation---\n')
 
 '''
 
-1) Have I hardcoded functions/instructions?
-2) PC 9: Incorrect?
-3) paramaters for functions
-4) get rid of if statement? ln 460
+1) If statement, hard coding?
+2) How to count each number?
 
 ''' 
