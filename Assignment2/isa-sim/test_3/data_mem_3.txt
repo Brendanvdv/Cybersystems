@@ -1,0 +1,13 @@
+# The initial content of the data memory
+# The format is: <data mem. address>: <memory value>;
+# All numbers are decimal 
+0: 4;
+1: 2;
+2: 7;
+3: 5;
+4: 8;
+5: 2;
+6: 2;
+7: 1;
+8: 3;
+9: 2;
