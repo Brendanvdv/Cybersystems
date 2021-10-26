@@ -3,19 +3,15 @@ import machine
 import neopixel
 
 
+#CODE FROM VIDEO. Gets temperature. https://www.youtube.com/watch?v=SJTk7V7iC1I&t=7s
+#################################################################
 tempSens = machine.I2C(scl=machine.Pin(17), sda = machine.Pin(21))
-
-#tempSens.scan()
 
 address = 24
 temp_reg = 5
 res_reg =8
 
-#tempSens.readfrom_mem(address,temp_reg,2)
-
 data = tempSens.readfrom_mem(address, temp_reg, 2)
-
-
 
 def temp_c(data):
     value = (data[0] << 8) | data[1]
@@ -24,24 +20,16 @@ def temp_c(data):
         temp -= 256.0
     return temp
 
-temp_c(data)
-
 ###############################################
 
-
+#Initialize neopixel
 np = neopixel.NeoPixel(machine.Pin(4), 8)
 
+#Define Colours
 GREEN = (255,0,0)
 RED = (0,255,0)
 BLUE = (0,0,255)
 ORANGE = (128,255,0)
-PINK = (0,255,128)
-
-
-# np[0] = (ORANGE) # set to red, full brightness
-# np.write()
-
-
 
 while True:
 

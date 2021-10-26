@@ -2,15 +2,14 @@ import os
 import time
 import machine
 
-tempSens = machine.I2C(scl=machine.Pin(17), sda = machine.Pin(21))
 
-#tempSens.scan()
+#CODE FROM VIDEO. Gets temperature.
+#################################################################
+tempSens = machine.I2C(scl=machine.Pin(17), sda = machine.Pin(21))
 
 address = 24
 temp_reg = 5
 res_reg =8
-
-#tempSens.readfrom_mem(address,temp_reg,2)
 
 data = tempSens.readfrom_mem(address, temp_reg, 2)
 
@@ -23,12 +22,14 @@ def temp_c(data):
         temp -= 256.0
     return temp
 
-temp_c(data)
+#####################################################################
 
 #Initialize LEDs
 p15R = machine.Pin(15,machine.Pin.OUT)#Red
 p32Y = machine.Pin(32,machine.Pin.OUT)#Yellow
 p14G = machine.Pin(14,machine.Pin.OUT)#Green
+
+
 
 
 while True:
@@ -38,22 +39,22 @@ while True:
 
     if temp_c(data) <= 26:
         p14G.value(1)
-       # time.sleep(0.2)
         p32Y.value(0)
-       # time.sleep(0.2)
         p15R.value(0)
 
     if temp_c(data) > 26 and temp_c(data) <= 28:
         p14G.value(0)
-       # time.sleep(0.2)
         p32Y.value(1)
-       # time.sleep(0.2)
         p15R.value(0)
 
     if temp_c(data) > 28:
 
         p14G.value(0)
-       # time.sleep(0.2)
         p32Y.value(0)
-       # time.sleep(0.2)
         p15R.value(1)
+
+
+#Questions
+#1) Do we need time sleeps?
+#2) Can we copy the code from the video?
+#3) import machine
