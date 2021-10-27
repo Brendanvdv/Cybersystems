@@ -3,7 +3,7 @@ import time
 import machine
 
 
-#CODE FROM VIDEO. Gets temperature.
+#CODE FROM VIDEO. Gets temperature. https://www.youtube.com/watch?v=SJTk7V7iC1I&t=7s
 #################################################################
 tempSens = machine.I2C(scl=machine.Pin(17), sda = machine.Pin(21))
 
@@ -52,9 +52,3 @@ while True:
         p14G.value(0)
         p32Y.value(0)
         p15R.value(1)
-
-
-#Questions
-#1) Do we need time sleeps?
-#2) Can we copy the code from the video?
-#3) import machine
