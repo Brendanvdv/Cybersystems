@@ -14,29 +14,58 @@ ap.config (authmode = 3, password = 'Pablo-password')
 #32: YELLOW LED
 #17,21: Temp Sens
 #39: ADC/potentiometer
-pins = [machine.Pin(i, machine.Pin.IN) for i in (4,12,17,21,39)]
-pins += [machine.Pin(i, machine.Pin.OUT) for i in (14,15,32)]
-pins[5].value(1)
-pins[7].value(1)
+pins = [machine.Pin(i, machine.Pin.IN) for i in (4,12,14,15,17,21,32,39)]
 
-print("Value is equal to:" + str(pins[3].value()))
-print()
-
-html = """<!DOCTYPE html>
+html = """
+<!DOCTYPE html>
 <html>
-    <head> 
-    <title> ESP32 Pins </title> 
-    </head>
-    <body> 
-    <h1> ESP32 Pins </h1>
-        <table border="1"> 
-        <tr>
-            <th>Pin</th>
-            <th>Value</th>
-        </tr> 
-        %s 
-        </table>
-    </body>
+<head>
+<title>
+ESP32 Pins
+</title>
+<style>
+table {
+	border-collapse: collapse;
+    font-family: Tahoma, Geneva, sans-serif;
+}
+table td {
+	padding: 15px;
+}
+table thead td {
+	background-color: #54585d;
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 13px;
+	border: 1px solid #54585d;
+}
+table tbody td {
+	color: #636363;
+	border: 1px solid #dddfe1;
+}
+table tbody tr {
+	background-color: #f9fafb;
+}
+table tbody tr:nth-child(odd) {
+	background-color: #ffffff;
+}
+</style>
+</head>
+
+<body>
+<h1> ESP32 Pins </h1>
+<table>
+	<thead>
+		<tr>
+			<td>Pin</td>
+			<td>Value</td>
+		</tr>
+	</thead>
+	<tbody>
+        %s
+	</tbody>
+</table>
+</body>
+
 </html>
 """ 
 
