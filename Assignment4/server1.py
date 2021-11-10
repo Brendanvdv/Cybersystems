@@ -7,6 +7,7 @@ ap.active (True)
 ap.config (essid = 'Lord of the Ping')
 ap.config (authmode = 3, password = 'Pablo-password')
 
+names = ["Neopixel", "Button", "Temp sens", "Temp Sens","Potentiometer", "Green LED", "Red LED", "Yellow LED"]
 #4: Neopixels
 #12: Button
 #14: Green LED
@@ -14,7 +15,8 @@ ap.config (authmode = 3, password = 'Pablo-password')
 #32: YELLOW LED
 #17,21: Temp Sens
 #39: ADC/potentiometer
-pins = [machine.Pin(i, machine.Pin.IN) for i in (4,12,14,15,17,21,32,39)]
+pins = [machine.Pin(i, machine.Pin.IN) for i in (4,12,17,21,39)]
+pins += [machine.Pin(i, machine.Pin.OUT) for i in (14,15,32)]
 
 html = """
 <!DOCTYPE html>
@@ -51,11 +53,12 @@ table tbody tr:nth-child(odd) {
 </style>
 </head>
 
-<body>
+<body style = "background-color: rgb(28, 139, 212);">
 <h1> ESP32 Pins </h1>
 <table>
 	<thead>
 		<tr>
+			<td>Name</td>
 			<td>Pin</td>
 			<td>Value</td>
 		</tr>
@@ -86,7 +89,10 @@ while True:
         #print(line)
         if not line or line == b'\r\n':
             break
-    rows = ['<tr><td>%s</td><td>%d</td></tr>' % (str(p), p.value()) for p in pins]
+    rows = ['<tr><td>%s</td><td>%s</td><td>%d</td></tr>' % (n, str(p), p.value())  for p,n in zip(pins,names)] 
     response = html % '\n'.join(rows)
     cl.send(response)
     cl.close()
+
+#QUESTIONS:
+#How to turn off LEDs
