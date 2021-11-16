@@ -8,7 +8,11 @@ ap.active (True)
 ap.config (essid = 'The Lord of the Pings')
 ap.config (authmode = 3, password = 'Pablo-password')
 
-names = ["Neopixel", "Button", "Temp sens", "Temp Sens","Potentiometer", "Green LED", "Red LED", "Yellow LED"]
+names = ["Temp sens", "Temp Sens","Potentiometer"]
+LEDs = ["Green LED", "Red LED", "Yellow LED"]
+NeoPixels = ["Neopixel"]
+Button = ["Button"]
+TS = ["Temp sens"]
 #4: Neopixels
 #12: Button
 #14: Green LED
@@ -18,10 +22,10 @@ names = ["Neopixel", "Button", "Temp sens", "Temp Sens","Potentiometer", "Green 
 #39: ADC/potentiometer
 
 
-pins = [machine.Pin(4, machine.Pin.OUT)]
-pins += [machine.Pin(12,machine.Pin.IN,machine.Pin.PULL_UP)]
-pins += [machine.Pin(i, machine.Pin.IN) for i in (17,21,39)]
-pins += [machine.Pin(i, machine.Pin.OUT) for i in (14,15,32)]
+NPpins = [machine.Pin(4, machine.Pin.OUT)]
+Bpins = [machine.Pin(12,machine.Pin.IN,machine.Pin.PULL_UP)]
+Lpins = [machine.Pin(i, machine.Pin.IN) for i in (17,21,39)]
+pins = [machine.Pin(i, machine.Pin.OUT) for i in (14,15,32)]
 
 # pins = [machine.Pin(i, machine.Pin.IN) for i in (117,21,39)]
 # pins += [machine.Pin(i, machine.Pin.OUT) for i in (14,15,32)]
@@ -97,7 +101,9 @@ while True:
         #print(line)
         if not line or line == b'\r\n':
             break
-    rows = ['<tr><td>%s</td><td>%s</td><td>%d</td></tr>' % (n, str(p), p.value())  for p,n in zip(pins,names)] 
+	rows = ['<tr><td>%s</td><td>%s</td><td>%d</td></tr>' % (n, str(p), p.value())  for p,n in zip(Lpins,LEDs)] 
+	rows += ['<tr><td>%s</td><td>%s</td><td>%d</td></tr>' % (n, str(p), p.value())  for p,n in zip(Bpins,Button)]
+	
     response = html % '\n'.join(rows)
     cl.send(response)
     cl.close()
