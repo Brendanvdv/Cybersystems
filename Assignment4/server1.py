@@ -24,11 +24,12 @@ TS = ["Temp sens"]
 
 NPpins = [machine.Pin(4, machine.Pin.OUT)]
 Bpins = [machine.Pin(12,machine.Pin.IN,machine.Pin.PULL_UP)]
-Lpins = [machine.Pin(i, machine.Pin.IN) for i in (17,21,39)]
+Lpins = [machine.Pin(i, machine.Pin.IN) for i in (14,15,32)]
 pins = [machine.Pin(i, machine.Pin.OUT) for i in (14,15,32)]
 
-# pins = [machine.Pin(i, machine.Pin.IN) for i in (117,21,39)]
-# pins += [machine.Pin(i, machine.Pin.OUT) for i in (14,15,32)]
+Lpins[0].value(1)
+Lpins[1].value(1)
+Lpins[2].value(1)
 
 html = """
 <!DOCTYPE html>
@@ -110,3 +111,5 @@ while True:
 
 #QUESTIONS:
 #How to turn off LEDs
+#Git
+#wifi name
