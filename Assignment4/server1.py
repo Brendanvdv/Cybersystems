@@ -1,10 +1,11 @@
 import machine
 import network
 import socket
+import neopixel
 
 ap = network.WLAN (network.AP_IF)
 ap.active (True)
-ap.config (essid = 'Lord of the Ping')
+ap.config (essid = 'The Lord of the Pings')
 ap.config (authmode = 3, password = 'Pablo-password')
 
 names = ["Neopixel", "Button", "Temp sens", "Temp Sens","Potentiometer", "Green LED", "Red LED", "Yellow LED"]
@@ -15,8 +16,15 @@ names = ["Neopixel", "Button", "Temp sens", "Temp Sens","Potentiometer", "Green 
 #32: YELLOW LED
 #17,21: Temp Sens
 #39: ADC/potentiometer
-pins = [machine.Pin(i, machine.Pin.IN) for i in (4,12,17,21,39)]
+
+
+pins = [machine.Pin(4, machine.Pin.OUT)]
+pins += [machine.Pin(12,machine.Pin.IN,machine.Pin.PULL_UP)]
+pins += [machine.Pin(i, machine.Pin.IN) for i in (17,21,39)]
 pins += [machine.Pin(i, machine.Pin.OUT) for i in (14,15,32)]
+
+# pins = [machine.Pin(i, machine.Pin.IN) for i in (117,21,39)]
+# pins += [machine.Pin(i, machine.Pin.OUT) for i in (14,15,32)]
 
 html = """
 <!DOCTYPE html>
