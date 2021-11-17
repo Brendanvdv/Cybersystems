@@ -22,7 +22,7 @@ TS = ["Temp sens"]
 #39: ADC/potentiometer
 
 
-NPpins = [machine.Pin(4, machine.Pin.OUT)]
+NPpins = [neopixel.NeoPixel(machine.Pin(4), 8)]
 Bpins = [machine.Pin(12,machine.Pin.IN,machine.Pin.PULL_UP)]
 Lpins = [machine.Pin(i, machine.Pin.IN) for i in (14,15,32)]
 pins = [machine.Pin(i, machine.Pin.OUT) for i in (14,15,32)]
@@ -99,11 +99,12 @@ while True:
     cl_file = cl.makefile('rwb', 0)
     while True:
         line = cl_file.readline()
-        #print(line)
+        print(line)
         if not line or line == b'\r\n':
             break
 	rows = ['<tr><td>%s</td><td>%s</td><td>%d</td></tr>' % (n, str(p), p.value())  for p,n in zip(Lpins,LEDs)] 
 	rows += ['<tr><td>%s</td><td>%s</td><td>%d</td></tr>' % (n, str(p), p.value())  for p,n in zip(Bpins,Button)]
+	rows += ['<tr><td>%s</td><td>%s</td><td>%s</td></tr>' % (n, str(p), str(p[0]))  for p,n in zip(NPpins,NeoPixels)]
 	
     response = html % '\n'.join(rows)
     cl.send(response)
