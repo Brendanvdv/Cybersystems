@@ -13,6 +13,7 @@ LEDs = ["Green LED", "Red LED", "Yellow LED"]
 NeoPixels = ["Neopixel"]
 Button = ["Button"]
 TS = ["Temp sens"]
+P = ["Poteniometer"]
 #4: Neopixels
 #12: Button
 #14: Green LED
@@ -24,34 +25,30 @@ TS = ["Temp sens"]
 
 NPpins = [neopixel.NeoPixel(machine.Pin(4), 8)]
 Bpins = [machine.Pin(12,machine.Pin.IN,machine.Pin.PULL_UP)]
-Lpins = [machine.Pin(i, machine.Pin.IN) for i in (14,15,32)]
+Lpins = [machine.Pin(i, machine.Pin.OUT) for i in (14,15,32)]
 TSpins = [machine.I2C(scl=machine.Pin(17), sda = machine.Pin(21))]
-pins = [machine.Pin(i, machine.Pin.OUT) for i in (14,15,32)]
+Ppins = [machine.ADC(machine.Pin(39))]
 
 #############################################################
 Lpins[0].value(1)
 Lpins[1].value(1)
 Lpins[2].value(1)
 #############################################################
-col = (84,60,20)
+
+#############################################################
+col = (5,10,15)
 NPpins[0][0] = col
 NPpins[0][1] = col
 NPpins[0].write()
 #############################################################
-address = 24
-temp_reg = 5
-res_reg =8
 
-data = TSpins[0].readfrom_mem(address, temp_reg, 2)
-
-def temp_c(data):
-    value = (data[0] << 8) | data[1]
-    temp = (value & 0xFFF) / 16.0
-    if value & 0x1000:
-        temp -= 256.0
-    return temp
 #############################################################
+# set 11dB input attenuation (voltage range roughly 0.0v - 3.6v)
+Ppins[0].atten(machine.ADC.ATTN_11DB)
 
+# set 9 bit return values (returned range 0-511)
+Ppins[0].width(machine.ADC.WIDTH_9BIT)
+#############################################################
 
 
 
@@ -124,18 +121,52 @@ while True:
     while True:
         line = cl_file.readline()
         print(line)
+
+        ###############################################
+        if line == b'GET /pins HTTP/1.1\r\n':
+            print("PINSSSSSSSSSSSSSSSSSSSSSSSSSS")
+         ###############################################    
         if not line or line == b'\r\n':
             break
-	rows = ['<tr><td>%s</td><td>%s</td><td>%d</td></tr>' % (n, str(p), p.value())  for p,n in zip(Lpins,LEDs)] 
-	rows += ['<tr><td>%s</td><td>%s</td><td>%d</td></tr>' % (n, str(p), p.value())  for p,n in zip(Bpins,Button)]
-	rows += ['<tr><td>%s</td><td>%s</td><td>%s</td></tr>' % (n, "Pin(4)", str(p[0]))  for p,n in zip(NPpins,NeoPixels)]
-	rows += ['<tr><td>%s</td><td>%s</td><td>%s</td></tr>' % (n, "Pin(17), Pin(21)", str(temp_c(data)))  for n in TS]
+
+
+    ################################################### 
+    address = 24
+    temp_reg = 5
+    res_reg =8
+
+    data = TSpins[0].readfrom_mem(address, temp_reg, 2)
+
+    def temp_c(data):
+        value = (data[0] << 8) | data[1]
+        temp = (value & 0xFFF) / 16.0
+        if value & 0x1000:
+            temp -= 256.0
+        return temp
+    ###################################################   
+
+    rows = ['<tr><td>%s</td><td>%s</td><td>%d</td></tr>' % (n, str(p), p.value())  for p,n in zip(Lpins,LEDs)] 
+    rows += ['<tr><td>%s</td><td>%s</td><td>%d</td></tr>' % (n, str(p), p.value())  for p,n in zip(Bpins,Button)]
+    rows += ['<tr><td>%s</td><td>%s</td><td>%s</td></tr>' % (n, "Pin(4)", str(p[0]))  for p,n in zip(NPpins,NeoPixels)]
+    rows += ['<tr><td>%s</td><td>%s</td><td>%s</td></tr>' % (n, "Pin(17), Pin(21)", str(temp_c(data)))  for n in TS]
+    rows += ['<tr><td>%s</td><td>%s</td><td>%s</td></tr>' % (n, "Pin(39)", str(Ppins[0].read()))  for n in P]
 	
+
+    # if line == b'GET /pin HTTP/1.1\r\n':
+    #     print("PINSSSSSSSSSSSSSSSSSSSSSSSSSS")
+
+
     response = html % '\n'.join(rows)
     cl.send(response)
     cl.close()
 
 #QUESTIONS:
-#How to turn off LEDs
 #Git
-#wifi name
+
+
+"""
+
+import os
+os.remove('main.py')
+
+"""
