@@ -1,4 +1,3 @@
-import json
 import machine
 import network
 import socket
@@ -51,39 +50,15 @@ Ppins[0].atten(machine.ADC.ATTN_11DB)
 Ppins[0].width(machine.ADC.WIDTH_9BIT)
 #############################################################
 
-#############################################################
-# Pins = {
 
-#     "Pin 4": "Neopixel",
-#     "Pin 12": "Button",
-#     "Pin 14": "Green LED",
-#     "Pin 15": "RED LED",
-#     "Pin 32": "YELLOW LED",
-#     "Pin 17,21": "Temperature Sensor",
-#     "Pin 39": "Potentiometer"
-    
-    
-# }
-
-# # Get a JSON formatted string
-# Pins_JSON = json.dumps(Pins, indent=4)
-
-#############################################################
 
 html = """
 <!DOCTYPE html>
 <html>
 <head>
-
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-
-
 <title>
 ESP32 Pins
 </title>
-
-<
 <style>
 table {
 	border-collapse: collapse;
@@ -117,7 +92,6 @@ table tbody tr:nth-child(odd) {
 <a href="/pins"><button>Pins</button></a>
 <a href="/sensors"><button>Sensors</button></a>
 
-
 <h1> ESP32 Pins </h1>
 
 <table>
@@ -132,15 +106,6 @@ table tbody tr:nth-child(odd) {
         %s
 	</tbody>
 </table>
-
-<div class="container-fluid">
-  <h1>My First Bootstrap Page</h1>
-  <button type="button" class="btn btn-secondary">Secondary</button>
-</div
-
-
-<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
 
 </body>
 
@@ -200,8 +165,6 @@ while True:
 
 #QUESTIONS:
 #Git
-#Bootstrap
-#Task3, Json
 
 
 """
