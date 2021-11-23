@@ -30,12 +30,14 @@ Lpins = [machine.Pin(i, machine.Pin.OUT) for i in (14,15,32)]
 TSpins = [machine.I2C(scl=machine.Pin(17), sda = machine.Pin(21))]
 Ppins = [machine.ADC(machine.Pin(39))]
 
+#LED stuff
 #############################################################
 Lpins[0].value(1)
 Lpins[1].value(1)
 Lpins[2].value(1)
 #############################################################
 
+#Neopixel stuff
 #############################################################
 col = (5,10,15)
 NPpins[0][0] = col
@@ -43,6 +45,7 @@ NPpins[0][1] = col
 NPpins[0].write()
 #############################################################
 
+#Potentiometer stuff
 #############################################################
 # set 11dB input attenuation (voltage range roughly 0.0v - 3.6v)
 Ppins[0].atten(machine.ADC.ATTN_11DB)
@@ -52,21 +55,21 @@ Ppins[0].width(machine.ADC.WIDTH_9BIT)
 #############################################################
 
 #############################################################
-# Pins = {
+Pins = {
 
-#     "Pin 4": "Neopixel",
-#     "Pin 12": "Button",
-#     "Pin 14": "Green LED",
-#     "Pin 15": "RED LED",
-#     "Pin 32": "YELLOW LED",
-#     "Pin 17,21": "Temperature Sensor",
-#     "Pin 39": "Potentiometer"
+    "Pin 4": "Neopixel",
+    "Pin 12": "Button",
+    "Pin 14": "Green LED",
+    "Pin 15": "RED LED",
+    "Pin 32": "YELLOW LED",
+    "Pin 17,21": "Temperature Sensor",
+    "Pin 39": "Potentiometer"
     
     
-# }
+}
 
 # # Get a JSON formatted string
-# Pins_JSON = json.dumps(Pins, indent=4)
+Pins_JSON = json.dumps(Pins, indent=4)
 
 #############################################################
 
@@ -152,16 +155,18 @@ while True:
         line = cl_file.readline()
         print(line)
 
+        #Web API stuff
         ###############################################
         if line == b'GET /pins HTTP/1.1\r\n':
             print("PINSSSSSSSSSSSSSSSSSSSSSSSSSS")
         if line == b'GET /sensors HTTP/1.1\r\n':
             print("SENSOSOSORESSRSsssssssss")
          ###############################################    
+
         if not line or line == b'\r\n':
             break
 
-
+    #Getting the Temperature
     ################################################### 
     address = 24
     temp_reg = 5
@@ -191,6 +196,7 @@ while True:
 #Git
 #Bootstrap
 #Task3, Json
+#Task1, Original code or all code?
 
 
 """
