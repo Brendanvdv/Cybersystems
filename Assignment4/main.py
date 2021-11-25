@@ -4,6 +4,7 @@ import network
 import socket
 import neopixel
 
+
 ap = network.WLAN (network.AP_IF)
 ap.active (True)
 ap.config (essid = 'The Lord of the Pings')
@@ -64,12 +65,10 @@ Pins = {
     "Pin 32": "YELLOW LED",
     "Pin 17,21": "Temperature Sensor",
     "Pin 39": "Potentiometer"
-    
-    
 }
 
 # # Get a JSON formatted string
-Pins_JSON = json.dumps(Pins, indent=4)
+Pins_JSON = json.dumps(Pins)
 
 #############################################################
 
@@ -158,7 +157,7 @@ while True:
         #Web API stuff
         ###############################################
         if line == b'GET /pins HTTP/1.1\r\n':
-            print("PINSSSSSSSSSSSSSSSSSSSSSSSSSS")
+           cl.send(Pins_JSON)
         if line == b'GET /sensors HTTP/1.1\r\n':
             print("SENSOSOSORESSRSsssssssss")
          ###############################################    
@@ -182,18 +181,20 @@ while True:
         return temp
     ###################################################   
 
+
     rows = ['<tr><td>%s</td><td>%s</td><td>%d</td></tr>' % (n, str(p), p.value())  for p,n in zip(Lpins,LEDs)] 
     rows += ['<tr><td>%s</td><td>%s</td><td>%d</td></tr>' % (n, str(p), p.value())  for p,n in zip(Bpins,Button)]
     rows += ['<tr><td>%s</td><td>%s</td><td>%s</td></tr>' % (n, "Pin(4)", str(p[0]))  for p,n in zip(NPpins,NeoPixels)]
     rows += ['<tr><td>%s</td><td>%s</td><td>%s</td></tr>' % (n, "Pin(17), Pin(21)", str(temp_c(data)))  for n in TS]
     rows += ['<tr><td>%s</td><td>%s</td><td>%s</td></tr>' % (n, "Pin(39)", str(Ppins[0].read()))  for n in P]
 	
+    
     response = html % '\n'.join(rows)
     cl.send(response)
     cl.close()
 
 #QUESTIONS:
-#Git
+#git
 #Bootstrap
 #Task3, Json
 #Task1, Original code or all code?
