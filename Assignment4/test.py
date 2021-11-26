@@ -1,14 +1,7 @@
-import machine
-import neopixel
+import time
+from datetime import datetime
+pt = datetime.strptime(timestring,'%H:%M:%S,%f')
+total_seconds = pt.second + pt.minute*60 + pt.hour*360()
 
-NPpins = [neopixel.NeoPixel(machine.Pin(4), 8)]
-
-col = (5,10,15)
-NPpins[0][0] = col
-NPpins[0][1] = col
-NPpins[0].write()
-
-print(NPpins)
-print(str(NPpins))
-print(str(NPpins[0][0]))
-print(NPpins[0])
+while True:
+    print(seconds)

@@ -231,23 +231,7 @@ while True:
         if (b'GET /pins HTTP/1.1\r\n') in line:
             response = Pins_JSON
         if (b'GET /sensors HTTP/1.1\r\n') in line:
-            response = Sens_JSON
-        # if (b'GET /pins/%s HTTP/1.1\r\n') % (Val.keys()) in line:
-        #     response = Val.get(s)
-
-
-
-        # if (b'GET /pins/%s HTTP/1.1\r\n') % ("Pin4") in line:
-        #     print("AFFFFFFFFFFFFFFFFFFF")
-
-        # for key in Val:
-        #     st = 'GET /pins/%s HTTP/1.1\r\n' % (str(key))
-        #     bs = st.encode('utf_8')
-        #     if bs in line: 
-        #         print("it WORRRRRRRKSSSSS")
-        #         #response = json.dumps(Val[key]) 
-
-         ###############################################    
+            response = Sens_JSON   
 
         for key,value in Values.items():
             if (b'GET /pins/%s HTTP/1.1\r\n') %key in line:
@@ -256,6 +240,7 @@ while True:
 
         if not line or line == b'\r\n':
             break
+        ###############################################
 
     cl.send(response)
     cl.close()
