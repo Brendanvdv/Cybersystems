@@ -3,7 +3,7 @@ import csv
 import matplotlib.pyplot as plt
 
 
-with open('Assignment4\mlah.txt') as f:
+with open('Assignment4\hemp.txt') as f:
     reader = csv.reader(f,quoting=csv.QUOTE_NONNUMERIC)
     xs, ys = zip(*reader)
 

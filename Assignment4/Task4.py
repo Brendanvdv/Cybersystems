@@ -3,17 +3,13 @@ import time
 import machine
 
 
-#CODE FROM VIDEO. Gets temperature. https://www.youtube.com/watch?v=SJTk7V7iC1I&t=7s
+
 #################################################################
 tempSens = machine.I2C(scl=machine.Pin(17), sda = machine.Pin(21))
 
 address = 24
 temp_reg = 5
 res_reg =8
-
-data = tempSens.readfrom_mem(address, temp_reg, 2)
-
-
 
 def temp_c(data):
     value = (data[0] << 8) | data[1]
@@ -24,12 +20,18 @@ def temp_c(data):
 
 #####################################################################
 
-f = open("temp.txt",'a')
+with open('temp.txt','w') as f:
 
+    for i in range(30):
 
-for i in range(10):
+        data = tempSens.readfrom_mem(address, temp_reg, 2)
 
-    f.write(str(i),str(temp_c(data)))
-    time.sleep(1)
+        print("The temperature is: " + str(temp_c(data)) + " c")
 
-f.close()
+        f.write('%s,%s' % (i,temp_c(data)))
+        f.write('\n')
+        time.sleep(1)
+
+    f.close()
+
+   
