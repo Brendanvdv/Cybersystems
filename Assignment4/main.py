@@ -61,21 +61,21 @@ address = 24
 temp_reg = 5
 res_reg =8
 
-data = TSpins[0].readfrom_mem(address, temp_reg, 2)
-
 def temp_c(data):
     value = (data[0] << 8) | data[1]
     temp = (value & 0xFFF) / 16.0
     if value & 0x1000:
         temp -= 256.0
     return temp
+
+data = TSpins[0].readfrom_mem(address, temp_reg, 2)
 ###################################################   
 
 
 
 
 
-#Json for Pins
+#Json for Pins. Task 3
 #############################################################
 Pins = {
 
@@ -94,7 +94,7 @@ Pins_JSON = json.dumps(Pins)
 
 #############################################################
 
-#Json for sensors
+#Json for sensors. Task 3
 #############################################################
 Sensors = {
 
@@ -107,7 +107,7 @@ Sensors = {
 Sens_JSON =json.dumps(Sensors)
 #############################################################
 
-#Json for values. User can check for these.
+#Dictionary for values. User can check for these. API. Task 3
 #############################################################
 Values = {
 
@@ -122,8 +122,8 @@ Values = {
 
     
 }
+#############################################################
 
-#Val =json.dumps(Values)
 
 
 
@@ -205,7 +205,7 @@ s.listen(1)
 print('listening on', addr)
 
 
-
+#rows for table. Task 2
 ###############################################
 rows = ['<tr><td>%s</td><td>%s</td><td>%d</td></tr>' % (n, str(p), p.value())  for p,n in zip(Lpins,LEDs)] 
 rows += ['<tr><td>%s</td><td>%s</td><td>%d</td></tr>' % (n, str(p), p.value())  for p,n in zip(Bpins,Button)]
@@ -227,27 +227,10 @@ while True:
         ###############################################
         if (b'GET / HTTP/1.1\r\n') in line:
             response = html % '\n'.join(rows)
-        #if line == b'GET /pins HTTP/1.1\r\n':
         if (b'GET /pins HTTP/1.1\r\n') in line:
             response = Pins_JSON
         if (b'GET /sensors HTTP/1.1\r\n') in line:
-            response = Sens_JSON
-        # if (b'GET /pins/%s HTTP/1.1\r\n') % (Val.keys()) in line:
-        #     response = Val.get(s)
-
-
-
-        # if (b'GET /pins/%s HTTP/1.1\r\n') % ("Pin4") in line:
-        #     print("AFFFFFFFFFFFFFFFFFFF")
-
-        # for key in Val:
-        #     st = 'GET /pins/%s HTTP/1.1\r\n' % (str(key))
-        #     bs = st.encode('utf_8')
-        #     if bs in line: 
-        #         print("it WORRRRRRRKSSSSS")
-        #         #response = json.dumps(Val[key]) 
-
-         ###############################################    
+            response = Sens_JSON   
 
         for key,value in Values.items():
             if (b'GET /pins/%s HTTP/1.1\r\n') %key in line:
@@ -256,6 +239,7 @@ while True:
 
         if not line or line == b'\r\n':
             break
+        ###############################################
 
     cl.send(response)
     cl.close()
