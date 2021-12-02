@@ -11,4 +11,7 @@ print(xs)
 print(ys)
 
 plt.plot(xs,ys)
+
+plt.xlabel("Time (Seconds)")
+plt.ylabel("Temperature (Celsius)")
 plt.show()

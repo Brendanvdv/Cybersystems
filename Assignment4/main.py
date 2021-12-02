@@ -71,15 +71,9 @@ def temp_c(data):
 data = TSpins[0].readfrom_mem(address, temp_reg, 2)
 ###################################################   
 
-
-
-
-
 #Json for Pins. Task 3
 #############################################################
 Pins = {
-
-
     "Pin 4": "Neopixel",
     "Pin 12": "Button",
     "Pin 14": "Green LED",
@@ -97,12 +91,10 @@ Pins_JSON = json.dumps(Pins)
 #Json for sensors. Task 3
 #############################################################
 Sensors = {
-
     "Pin 17": "Temperature Sensor",
     "Pin 21": "Temperature Sensor",
     "Pin 12": "Button",
     "Pin 39": "Potentiometer"
-
 }
 Sens_JSON =json.dumps(Sensors)
 #############################################################
@@ -110,7 +102,6 @@ Sens_JSON =json.dumps(Sensors)
 #Dictionary for values. User can check for these. API. Task 3
 #############################################################
 Values = {
-
     "Pin4": str(NPpins[0][0]),
     "Pin12": str(Bpins[0].value()),
     "Pin14": str(Lpins[0].value()),
@@ -119,15 +110,15 @@ Values = {
     "Pin17": str(temp_c(data)),
     "Pin21": str(temp_c(data)),
     "Pin39": str(Ppins[0].read())
-
-    
 }
 #############################################################
 
-
-
-
-
+#Task 5
+#############################################################
+green = [i for i in range(255)]
+red = [i for i in range(255)]
+blue = [i for i in range(255)]
+#############################################################
 
 
 html = """
@@ -234,9 +225,39 @@ while True:
 
         for key,value in Values.items():
             if (b'GET /pins/%s HTTP/1.1\r\n') %key in line:
-                print("AHHHHHHHHHHH")
                 response = json.dumps(value)
 
+        for key,value in Values.items():
+            if (b'GET /sensors/%s HTTP/1.1\r\n') %key in line:
+                response = json.dumps(value)
+
+
+        if (b'GET /GledON HTTP/1.1\r\n') in line:
+            Lpins[0].value(1)
+        if (b'GET /RledON HTTP/1.1\r\n') in line:
+            Lpins[1].value(1)
+        if (b'GET /YledON HTTP/1.1\r\n') in line:
+            Lpins[2].value(1)
+        if (b'GET /GledOFF HTTP/1.1\r\n') in line:
+            Lpins[0].value(0)
+        if (b'GET /RledOFF HTTP/1.1\r\n') in line:
+            Lpins[1].value(0)
+        if (b'GET /YledOFF HTTP/1.1\r\n') in line:
+            Lpins[2].value(0)
+
+        ##################################################
+        x = line.find(b'GET /rgb')
+        if x != -1:
+
+            response = html % '\n'.join(rows)
+            print(line[x+8:])
+            colList = str(line[x+8:]).split(",")
+            col = (int(colList[1]),int(colList[2]),int(colList[3]))
+            NPpins[0][0] = col
+            NPpins[0][1] = col
+            NPpins[0].write()
+        ##################################################
+        
         if not line or line == b'\r\n':
             break
         ###############################################
@@ -250,10 +271,8 @@ while True:
     
 
 #QUESTIONS:
-#git
 #Bootstrap
-#Task3, Json
-#Task1, Original code or all code?
+#How to get values to update task 2?
 
 
 """

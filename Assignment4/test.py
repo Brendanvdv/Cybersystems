@@ -1,14 +1,21 @@
-import time
-import csv
-import matplotlib.pyplot as plt
+# green = [i for i in range(255)]
+# red = [i for i in range(255)]
+# blue = [i for i in range(255)]
+
+# for g,r,b in zip(green,red,blue):
+#      print(g,r,b)
 
 
-with open('Assignment4\mlah.txt') as f:
-    reader = csv.reader(f,quoting=csv.QUOTE_NONNUMERIC)
-    xs, ys = zip(*reader)
 
-print(xs)
-print(ys)
+line = "GET /10,15,2"
 
-plt.plot(xs,ys)
-plt.show()
+print(line[5:])
+
+
+ln = "Get /rgb"
+
+print(ln.find("rgb"))
+
+z = "b'123"
+
+print(int(z))

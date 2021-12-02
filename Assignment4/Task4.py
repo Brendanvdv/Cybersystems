@@ -22,7 +22,7 @@ def temp_c(data):
 
 with open('temp.txt','w') as f:
 
-    for i in range(30):
+    for i in range(15):
 
         data = tempSens.readfrom_mem(address, temp_reg, 2)
 
